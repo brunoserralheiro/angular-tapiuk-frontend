@@ -10,7 +10,8 @@
     <p>
       <input
         type="text"
-        value="{{ product.price }}"
+        name="{{ product.id }}"
+        ngModel="{{ product.price }}"
         (input)="onPriceUpdate(product, $event.target.value)"
       />
     </p>

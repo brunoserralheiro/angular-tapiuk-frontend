@@ -35,8 +35,8 @@ export class ProductComponent implements OnInit {
   _get(): void { }
 
   _update(p: Product): void {
-    console.log(p);
-    this.productService.updateProduct(p);
+    console.log('_update', p);
+    this.productService.updateProduct(p).subscribe(o => console.log('callback', o));
   }
 
   // set dynamic css classes

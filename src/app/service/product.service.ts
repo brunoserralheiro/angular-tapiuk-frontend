@@ -2,49 +2,38 @@
 import { Injectable } from '@angular/core';
 import { Product } from '../model/Product';
 import { Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  constructor(
-  ) { }
+  constructor(private http: HttpClient) { }
 
-  initProducts: Product[] = [
-    {
-      id: '1',
-      name: 'tuna',
-      price: '7.00',
-      inStock: true
-    },
+  url: string = 'http://localhost:3030/api/products?access_token=rBWNsHwAkmwPrbwRiwJnOEQDWKJxGRxlCZHcxcMbDUIc7sv5L99kqdr56dBuAX0q';
 
-    {
-      id: '2',
-      name: 'Chicken',
-      price: '7.00',
-      inStock: true
-    },
-    {
-      id: '3',
-      name: 'Veggie',
-      price: '6.00',
-      inStock: true
-    }
-  ];
-  products = this.initProducts;
+  products: Product[] = [];
 
-  getProduct(): Product[] {
-    return this.products;
+
+  getProduct(): Observable<Product[]> {
+    console.log('getProduct');
+    return this.http.get<Product[]>(this.url, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
+
+
   }
-  updateProduct(p: Product): Product[] {
+  updateProduct(p: Product): Observable<void> {
 
     this.products.forEach((element, index) => {
       if (element.id === p.id) {
         this.products[index] = p;
       }
     });
-    console.log('updateProduct', this.products);
-    return this.products;
-
+    console.log('updateProduct', p);
+    return this.http.put<void>(`${this.url}`, p, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
   }
 }
